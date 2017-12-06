@@ -1,0 +1,62 @@
+Kafka Depends on Zookeeper 
+
+Step 1: Start Zookeeper zookeeper-server-start.bat
+(may need additional configuration) passing configuration is mandatory 
+
+.zookeeper-server-start.bat ....configzookeeper.properties
+
+**************************************************************************************
+
+Step 2: Start kafka server (if needed change the properties, and you may have to 
+change the time out from 6000 to 60000) 
+
+.kafka-server-start.bat ....configserver.properties
+
+// for clustering referring to new properties file 
+
+.kafka-server-start.bat ....configserver-1.properties
+.kafka-server-start.bat ....configserver-2.properties
+**************************************************************************************
+
+
+Step 3: create a topic  (You can create multiple topics ) 
+	.kafka-topics.bat --create --zookeeper localhost:2181 --topic exitopic1 --partitions 3 --replication-factor 1
+
+	.kafka-topics.bat --create --zookeeper localhost:2181 --topic exitopic2 --partitions 3 --replication-factor 1
+
+// creating topics for clustering 
+.kafka-topics.bat --create --zookeeper localhost:2181 --topic server1topic1 --partitions 3 --replication-factor 1
+.kafka-topics.bat --create --zookeeper localhost:2181 --topic server1topic2 --partitions 3 --replication-factor 1
+
+.kafka-topics.bat --create --zookeeper localhost:2181 --topic server2topic1 --partitions 3 --replication-factor 1
+.kafka-topics.bat --create --zookeeper localhost:2181 --topic server2topic2 --partitions 3 --replication-factor 1
+
+
+**************************************************************************************
+
+
+Step 4: to list the topics which are created 
+
+.kafka-topics.bat --zookeeper localhost:2181 --list
+**************************************************************************************
+Step 5: to describe the topic 
+.kafka-topics.bat --zookeeper localhost:2181 --topic exitopic1 --describe
+**************************************************************************************
+
+Step 6: Create a producer 
+.kafka-console-producer.bat --topic exitopic1 --broker-list localhost:9092
+
+//for multiple cluster 
+.kafka-console-producer.bat --topic server1topic1 --broker-list localhost:9093
+
+.kafka-console-producer.bat --topic server2topic1 --broker-list localhost:9094
+**************************************************************************************
+Step 7: Create a consumer ( you can create multiple consumers for the same producer) 
+
+.kafka-console.consumer.bat --topic server1topic1 --bootstrap-server localhost:9093
+**************************************************************************************
+
+
+
+
+
